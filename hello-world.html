@@ -2,10 +2,10 @@
 <html lang="en">
 <head>
           <title>libdatachannel</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta charset="utf-8" />
-        <link href="https://libdatachannel.org/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="libdatachannel Full Atom Feed" />
-        <link href="https://libdatachannel.org/feeds/{slug}.atom.xml" type="application/atom+xml" rel="alternate" title="libdatachannel Categories Atom Feed" />
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta charset="utf-8">
+        <link href="https://libdatachannel.org/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="libdatachannel Full Atom Feed">
+        <link href="https://libdatachannel.org/feeds/{slug}.atom.xml" type="application/atom+xml" rel="alternate" title="libdatachannel Categories Atom Feed">
         <!-- twitter card metadata -->
 <meta name="twitter:site" content="">
 <meta name="twitter:title" content="Hello World!">
@@ -15,36 +15,23 @@
 <meta property="og:title" content="libdatachannel | Hello World!" />
 <meta property="og:description" content="" />
         <!-- favicon -->
-        <!-- moment.js for date formatting -->
-        <script src="https://libdatachannel.org/theme/js/moment.js"></script>
         <!-- css -->
-        <link rel="stylesheet" type="text/css" href="https://libdatachannel.org/theme/css/main.css" />
-        <link href="https://libdatachannel.org/theme/css/icons.css" rel="stylesheet">
-        <!-- menu toggle javascript -->
-        <script type="text/javascript">
-            document.addEventListener("DOMContentLoaded", initMenu);
-
-            function initMenu(){
-                var menu = document.getElementById("menu");
-                var menulink = document.getElementById("menu-link");
-                menulink.addEventListener("click", function toggleMenu(){
-                        window.event.preventDefault();
-                        menulink.classList.toggle('active');
-                        menu.classList.toggle('active');
-                    });
-            };
-        </script>
+        <link rel="stylesheet" type="text/css" href="https://libdatachannel.org/theme/css/main.css">
+        <link rel="stylesheet" type="text/css" href="https://libdatachannel.org/theme/css/pygments-highlight.css">
 
 
 
 </head>
 <body>
-    <div role="banner" id="masthead">
+<a href="https://github.com/paullouisageneau/libdatachannel">
+<img style="position: absolute; top: 0; right: 0; border: 0;" src="https://libdatachannel.org/images/forkme_right_gray_6d6d6d.svg" alt="Fork me on GitHub" />
+</a>
+    <div role="banner" id="banner">
         <header>
-            <h1><a href="/">libdatachannel</a></h1>
-            <a href="#menu" id="menu-link">more stuff</a>
             <nav id="menu">
                 <ul>
+                        <li><a href="https://libdatachannel.org/">libdatachannel</a></li>
+                        <li><a href="https://libdatachannel.org/pages/reference.html">reference</a></li>
                 </ul>
             </nav>
         </header>
@@ -52,18 +39,10 @@
         <div class="page" role="main">
   <div class="article" role="article">
     <article>
-        <footer>
-            <a name="top"></a>
-            <p>
-              <time datetime=" 2021-07-21 21:00:00+02:00">
-                <script>document.write(moment('2021-07-21 21:00:00+02:00').format('LL'));</script>
-              </time>
-            </p>
-        </footer>
         <header>
-          <h2>
+          <h1>
             Hello World!
-          </h2>
+          </h1>
         </header>
       <div class="content">
          <p>Hello world!</p>
@@ -75,9 +54,7 @@
   </div>
 <!-- end article -->
                 <footer>
-                    <div class="icons">
-                    </div>
-                    <p>© <script>document.write(moment().format('YYYY'));</script> Paul-Louis Ageneau</p>
+                    <p>© 2021 Paul-Louis Ageneau</p>
                 </footer>
         </div>
 </body>

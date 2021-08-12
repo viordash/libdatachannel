@@ -1,83 +1,90 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-        <title>libdatachannel</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta charset="utf-8" />
-        <link href="https://libdatachannel.org/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="libdatachannel Full Atom Feed" />
+          <title>libdatachannel</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta charset="utf-8">
+        <link href="https://libdatachannel.org/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="libdatachannel Full Atom Feed">
         <!-- twitter card metadata -->
 <meta name="twitter:site" content="">
 <meta name="twitter:title" content="libdatachannel">
 <meta name="twitter:description" content="">
         <!-- OG Tags -->
-<meta property="og:url" content="https://libdatachannel.org"/>
-<meta property="og:title" content="libdatachannel" />
+<meta property="og:url" content="https://libdatachannel.org/"/>
+<meta property="og:title" content="libdatachannel | libdatachannel" />
 <meta property="og:description" content="" />
         <!-- favicon -->
-        <!-- moment.js for date formatting -->
-        <script src="https://libdatachannel.org/theme/js/moment.js"></script>
         <!-- css -->
-        <link rel="stylesheet" type="text/css" href="https://libdatachannel.org/theme/css/main.css" />
-        <link href="https://libdatachannel.org/theme/css/icons.css" rel="stylesheet">
-        <!-- menu toggle javascript -->
-        <script type="text/javascript">
-            document.addEventListener("DOMContentLoaded", initMenu);
+        <link rel="stylesheet" type="text/css" href="https://libdatachannel.org/theme/css/main.css">
+        <link rel="stylesheet" type="text/css" href="https://libdatachannel.org/theme/css/pygments-highlight.css">
 
-            function initMenu(){
-                var menu = document.getElementById("menu");
-                var menulink = document.getElementById("menu-link");
-                menulink.addEventListener("click", function toggleMenu(){
-                        window.event.preventDefault();
-                        menulink.classList.toggle('active');
-                        menu.classList.toggle('active');
-                    });
-            };
-        </script>
+
+
 </head>
 <body>
-    <div role="banner" id="masthead">
+<a href="https://github.com/paullouisageneau/libdatachannel">
+<img style="position: absolute; top: 0; right: 0; border: 0;" src="https://libdatachannel.org/images/forkme_right_gray_6d6d6d.svg" alt="Fork me on GitHub" />
+</a>
+    <div role="banner" id="banner">
         <header>
-            <h1><a href="/">libdatachannel</a></h1>
-            <a href="#menu" id="menu-link">more stuff</a>
             <nav id="menu">
                 <ul>
+                        <li class="active"><a href="https://libdatachannel.org/">libdatachannel</a></li>
+                        <li><a href="https://libdatachannel.org/pages/reference.html">reference</a></li>
                 </ul>
             </nav>
         </header>
     </div>
         <div class="page" role="main">
-<div class="articles">
-        <ol>
-            <li>
-                <article>
-                    <footer>
-                         <p>
-                            <time datetime="2021-07-21 21:00:00+02:00">
-                                <script>document.write(moment('2021-07-21 21:00:00+02:00').format('LL'));</script>
-                            </time>
-                        </p>
-                    </footer>
-                    <header>
-                        <a href="https://libdatachannel.org/hello-world.html">
-                            <h2>Hello World!</h2>
-                        </a>
-                    </header>
-                    <div class="summary"> </div>
-                    <div class="tags">
-                        <ul class="tags">
-                        </ul>
-                    </div>
-                    <a href="https://libdatachannel.org/hello-world.html">
-                        <p class="readmore">Read more...</p>
-                    </a>
-                </article>
-            </li>
-        </ol>
-        
-</div>                <footer>
-                    <div class="icons">
-                    </div>
-                    <p>© <script>document.write(moment().format('YYYY'));</script> Paul-Louis Ageneau</p>
+  <div class="article" role="article">
+    <article>
+        <header>
+          <h1>
+            libdatachannel
+          </h1>
+        </header>
+      <div class="content">
+         <div id="home">
+    <p>
+    libdatachannel is an open-source software library implementing WebRTC Data Channels, WebRTC Media Transport, and WebSockets. It is written in C++17 and offers C bindings. The <a href="https://github.com/paullouisageneau/libdatachannel">code source</a> is available under LGPLv2.
+    </p>
+    <section>
+        <img src="/images/icon_easy.png">
+        <h3>Easy</h3>
+        <ul>
+            <li>Simple API inspired by the JavaScript API including WebSocket for signaling</li>
+            <li>Minimal external dependencies (only <a href="https://www.openssl.org/">OpenSSL</a> or <a href="https://www.openssl.org/">GnuTLS</a>)
+            <li>Lightweight and way easier to compile and use than Google's <a href="https://webrtc.googlesource.com/src/">reference library</a>
+        </ul>
+    </section>
+    <section>
+        <img src="/images/icon_compatible.png">
+        <h3>Compatible</h3>
+        <ul>
+            <li>Compatible with browsers Firefox, Chromium, and Safari, and other WebRTC libraries (see <a href="https://github.com/sipsorcery/webrtc-echoes">webrtc-echoes</a>)</li>
+            <li>Licensed under <a href="https://www.gnu.org/licenses/old-licenses/lgpl-2.1.en.html">LGPLv2</a>, meaning software with any license may link against the library</li>
+            <li>Community-maintained bindings available for <a href="https://github.com/lerouxrgd/datachannel-rs">Rust</a>, <a href="https://github.com/murat-dogan/node-datachannel">Node.js</a>, and <a href="https://github.com/hanseuljun/datachannel-unity">Unity</a></li>
+        </ul>
+    </section>
+    <section>
+        <img src="/images/icon_portable.png">
+        <h3>Portable</h3>
+        <ul>
+            <li>Support for POSIX platforms (including GNU/Linux, Android, Apple macOS, and FreeBSD) and Microsoft Windows</li>
+            <li>Support for both <a href="https://www.openssl.org/">OpenSSL</a> and <a href="https://www.gnutls.org/">GnuTLS</a> as TLS backend
+            <li>Code using Data Channels and WebSockets may be compiled as-is to WebAssembly for browsers with <a href="https://github.com/paullouisageneau/datachannel-wasm">datachannel-wasm</a></li>
+        </ul>
+    </section>
+</div>
+      </div>
+      <div class="back-to-top">
+          <a href="#top">back to top</a>
+      </div>
+    </article>
+  </div>
+<!-- end article -->
+                <footer>
+                    <p>© 2021 Paul-Louis Ageneau</p>
                 </footer>
         </div>
 </body>
