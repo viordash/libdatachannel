@@ -300,35 +300,51 @@
 <h3>Channel (Common API for Data Channel, Track, and WebSocket)</h3>
 <p>The following common functions might be called with a generic channel identifier. It may be the identifier of either a Data Channel, a Track, or a WebSocket.</p>
 <h4>rtcSetXCallback</h4>
-<p>These functions set, change, or unset (if <code>cb</code> is <code>NULL</code>) the different callbacks of a channel.</p>
+<p>These functions set, change, or unset (if <code>cb</code> is <code>NULL</code>) the different callbacks of a channel identified by the argument <code>id</code>.</p>
 <div class="highlight"><pre><span></span><code>int rtcSetOpenCallback(int id, rtcOpenCallbackFunc cb)
 </code></pre></div>
 
 <p><code>cb</code> must have the following signature: <code>void myOpenCallback(int id, void *user_ptr)</code></p>
+<p>It is called when the channel was previously connecting and is now open.</p>
 <div class="highlight"><pre><span></span><code>int rtcSetClosedCallback(int id, rtcClosedCallbackFunc cb)
 </code></pre></div>
 
 <p><code>cb</code> must have the following signature: <code>void myClosedCallback(int id, void *user_ptr)</code></p>
+<p>It is called when the channel was previously open and is now closed.</p>
 <div class="highlight"><pre><span></span><code>int rtcSetErrorCallback(int id, rtcErrorCallbackFunc cb)
 </code></pre></div>
 
 <p><code>cb</code> must have the following signature: <code>void myErrorCallback(int id, const char *error, void *user_ptr)</code></p>
+<p>It is called when the channel experience an error, either while connecting or open.</p>
 <div class="highlight"><pre><span></span><code>int rtcSetMessageCallback(int id, rtcMessageCallbackFunc cb)
 </code></pre></div>
 
 <p><code>cb</code> must have the following signature: <code>void myMessageCallback(int id, const char *message, int size, void *user_ptr)</code></p>
+<p>It is called when the channel receives a message. While it is set, messages can't be received with <code>rtcReceiveMessage</code>.</p>
 <div class="highlight"><pre><span></span><code>int rtcSetBufferedAmountLowCallback(int id, rtcBufferedAmountLowCallbackFunc cb)
 </code></pre></div>
 
 <p><code>cb</code> must have the following signature: <code>void myBufferedAmountLowCallback(int id, void *user_ptr)</code></p>
+<p>It is called when the buffered amount was strictly higher than the threshold (see <code>rtcSetBufferedAmountLowThreshold</code>) and is now lower or equal than the threshold.</p>
 <div class="highlight"><pre><span></span><code>int rtcSetAvailableCallback(int id, rtcAvailableCallbackFunc cb)
 </code></pre></div>
 
 <p><code>cb</code> must have the following signature: <code>void myAvailableCallback(int id, void *user_ptr)</code></p>
+<p>It is called when messages are now available to be received with <code>rtcReceiveMessage</code>.</p>
+<h4>rtcIsOpen</h4>
+<div class="highlight"><pre><span></span><code>bool rtcIsOpen(int id)
+</code></pre></div>
+
+<p>Arguments:</p>
+<ul>
+<li><code>id</code>: the channel identifier</li>
+</ul>
+<p>Return value: <code>true</code> if the channel exists and is open, <code>false</code> otherwise</p>
 <h4>rtcSendMessage</h4>
 <div class="highlight"><pre><span></span><code><span class="nb nb-Type">int</span> <span class="n">rtcSendMessage</span><span class="p">(</span><span class="nb nb-Type">int</span> <span class="n">id</span><span class="p">,</span> <span class="k">const</span> <span class="nb">char</span> <span class="o">*</span><span class="n">data</span><span class="p">,</span> <span class="nb nb-Type">int</span> <span class="n">size</span><span class="p">)</span>
 </code></pre></div>
 
+<p>Sends a message in the channel.</p>
 <p>Arguments:</p>
 <ul>
 <li><code>id</code>: the channel identifier</li>
@@ -336,7 +352,7 @@
 <li><code>size</code>: if size &gt;= 0, <code>data</code> is interpreted as a binary message of length <code>size</code>, otherwise it is interpreted as a null-terminated UTF-8 string.</li>
 </ul>
 <p>Return value: <code>RTC_ERR_SUCCESS</code> or a negative error code</p>
-<p>Sends a message immediately if possible.</p>
+<p>The message is sent immediately if possible, otherwise it is buffered to be sent later.</p>
 <p>Data Channel and WebSocket: If the message may not be sent immediately due to flow control or congestion control, it is buffered until it can actually be sent. You can retrieve the current buffered data size with <code>rtcGetBufferedAmount</code>.
 Tracks are an exception: There is no flow or congestion control, messages are never buffered and <code>rtcGetBufferedAmount</code> always returns 0.</p>
 <h4>rtcGetBufferedAmount</h4>
