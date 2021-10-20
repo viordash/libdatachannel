@@ -340,6 +340,15 @@
 <li><code>id</code>: the channel identifier</li>
 </ul>
 <p>Return value: <code>true</code> if the channel exists and is open, <code>false</code> otherwise</p>
+<h4>rtcIsClosed</h4>
+<div class="highlight"><pre><span></span><code>bool rtcIsClosed(int id)
+</code></pre></div>
+
+<p>Arguments:</p>
+<ul>
+<li><code>id</code>: the channel identifier</li>
+</ul>
+<p>Return value: <code>true</code> if the channel exists and is closed (not open and not connecting), <code>false</code> otherwise</p>
 <h4>rtcSendMessage</h4>
 <div class="highlight"><pre><span></span><code><span class="nb nb-Type">int</span> <span class="n">rtcSendMessage</span><span class="p">(</span><span class="nb nb-Type">int</span> <span class="n">id</span><span class="p">,</span> <span class="k">const</span> <span class="nb">char</span> <span class="o">*</span><span class="n">data</span><span class="p">,</span> <span class="nb nb-Type">int</span> <span class="n">size</span><span class="p">)</span>
 </code></pre></div>
