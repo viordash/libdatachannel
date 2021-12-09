@@ -371,7 +371,7 @@ Tracks are an exception: There is no flow or congestion control, messages are ne
 
 <p>Retrieves the current buffered amount, i.e. the total size of currently buffered messages waiting to be actually sent in the channel. This does not account for the data buffered at the transport level.</p>
 <p>Return value: the buffered amount or a negative error code</p>
-<h4>rtcGetBufferedAmountLowThreshold</h4>
+<h4>rtcSetBufferedAmountLowThreshold</h4>
 <div class="highlight"><pre><span></span><code>int rtcSetBufferedAmountLowThreshold(int id, int amount)
 </code></pre></div>
 
@@ -381,7 +381,7 @@ Tracks are an exception: There is no flow or congestion control, messages are ne
 <li><code>id</code>: the channel identifier</li>
 <li><code>amount</code>: the new buffer level threshold</li>
 </ul>
-<p>Return value: the identifier of the new WebSocket or a negative error code</p>
+<p>Return value: <code>RTC_ERR_SUCCESS</code> or a negative error code</p>
 <h4>rtcReceiveMessage</h4>
 <div class="highlight"><pre><span></span><code>int rtcReceiveMessage(int id, char *buffer, int *size)
 </code></pre></div>
