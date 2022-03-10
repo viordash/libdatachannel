@@ -74,7 +74,7 @@
 <li><code>message</code>: a null-terminated string containing the log message</li>
 </ul>
 <h4>rtcPreload</h4>
-<div class="highlight"><pre><span></span><code><span class="n">void</span> <span class="n">rtcPreload</span><span class="p">(</span><span class="n">void</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="nb nb-Type">void</span><span class="w"> </span><span class="n">rtcPreload</span><span class="p">(</span><span class="nb nb-Type">void</span><span class="p">)</span><span class="w"></span>
 </code></pre></div>
 
 <p>An optional call to <code>rtcPreload</code> preloads the global resources used by the library. If it is not called, resources are lazy-loaded when they are required for the first time by a PeerConnection, which for instance prevents from properly timing connection establishment (as the first one will take way more time). The call blocks until preloading is finished. If resources are already loaded, the call has no effect.</p>
@@ -96,21 +96,22 @@
 </ul>
 <h3>PeerConnection</h3>
 <h4>rtcCreatePeerConnection</h4>
-<div class="highlight"><pre><span></span><code><span class="nb nb-Type">int</span> <span class="n">rtcCreatePeerConnection</span><span class="p">(</span><span class="k">const</span> <span class="n">rtcConfiguration</span> <span class="o">*</span><span class="n">config</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="nb nb-Type">int</span><span class="w"> </span><span class="n">rtcCreatePeerConnection</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">rtcConfiguration</span><span class="w"> </span><span class="o">*</span><span class="n">config</span><span class="p">)</span><span class="w"></span>
 
-<span class="n">typedef</span> <span class="n">struct</span> <span class="p">{</span>
-    <span class="k">const</span> <span class="nb">char</span> <span class="o">**</span><span class="n">iceServers</span><span class="p">;</span>
-    <span class="nb nb-Type">int</span> <span class="n">iceServersCount</span><span class="p">;</span>
-    <span class="k">const</span> <span class="nb">char</span> <span class="o">*</span><span class="n">bindAddress</span><span class="p">;</span>
-    <span class="n">rtcCertificateType</span> <span class="n">certificateType</span><span class="p">;</span>
-    <span class="n">rtcTransportPolicy</span> <span class="n">iceTransportPolicy</span><span class="p">;</span>
-    <span class="nb nb-Type">bool</span> <span class="n">enableIceTcp</span><span class="p">;</span>
-    <span class="nb nb-Type">bool</span> <span class="n">disableAutoNegotiation</span><span class="p">;</span>
-    <span class="n">uint16_t</span> <span class="n">portRangeBegin</span><span class="p">;</span>
-    <span class="n">uint16_t</span> <span class="n">portRangeEnd</span><span class="p">;</span>
-    <span class="nb nb-Type">int</span> <span class="n">mtu</span><span class="p">;</span>
-    <span class="nb nb-Type">int</span> <span class="n">maxMessageSize</span><span class="p">;</span>
-<span class="p">}</span> <span class="n">rtcConfiguration</span><span class="p">;</span>
+<span class="n">typedef</span><span class="w"> </span><span class="n">struct</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="nb">char</span><span class="w"> </span><span class="o">**</span><span class="n">iceServers</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="nb nb-Type">int</span><span class="w"> </span><span class="n">iceServersCount</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="nb">char</span><span class="w"> </span><span class="o">*</span><span class="n">bindAddress</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">rtcCertificateType</span><span class="w"> </span><span class="n">certificateType</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">rtcTransportPolicy</span><span class="w"> </span><span class="n">iceTransportPolicy</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="nb nb-Type">bool</span><span class="w"> </span><span class="n">enableIceTcp</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="nb nb-Type">bool</span><span class="w"> </span><span class="n">enableIceUdpMux</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="nb nb-Type">bool</span><span class="w"> </span><span class="n">disableAutoNegotiation</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">uint16_t</span><span class="w"> </span><span class="n">portRangeBegin</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">uint16_t</span><span class="w"> </span><span class="n">portRangeEnd</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="nb nb-Type">int</span><span class="w"> </span><span class="n">mtu</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="nb nb-Type">int</span><span class="w"> </span><span class="n">maxMessageSize</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"> </span><span class="n">rtcConfiguration</span><span class="p">;</span><span class="w"></span>
 </code></pre></div>
 
 <p>Creates a Peer Connection.</p>
@@ -123,6 +124,7 @@
 <li><code>certificateType</code> (optional): certificate type, either <code>RTC_CERTIFICATE_ECDSA</code> or <code>RTC_CERTIFICATE_RSA</code> (0 or <code>RTC_CERTIFICATE_DEFAULT</code> if default)</li>
 <li><code>iceTransportPolicy</code> (optional): ICE transport policy, if set to <code>RTC_TRANSPORT_POLICY_RELAY</code>, the PeerConnection will emit only relayed candidates (0 or <code>RTC_TRANSPORT_POLICY_ALL</code> if default)</li>
 <li><code>enableIceTcp</code>: if true, generate TCP candidates for ICE (ignored with libjuice as ICE backend)</li>
+<li><code>enableIceUdpMux</code>: if true, connections are multiplexed on the same UDP port (should be combined with <code>portRangeBegin</code> and <code>portRangeEnd</code>, ignored with libnice as ICE backend)</li>
 <li><code>disableAutoNegotiation</code>: if true, the user is responsible for calling <code>rtcSetLocalDescription</code> after creating a Data Channel and after setting the remote description</li>
 <li><code>portRangeBegin</code> (optional): first port (included) of the allowed local port range (0 if unused)</li>
 <li><code>portRangeEnd</code> (optional): last port (included) of the allowed local port (0 if unused)</li>
@@ -172,7 +174,7 @@
 
 <p><code>cb</code> must have the following signature: <code>void myTrackCallback(int pc, int tr, void *user_ptr)</code></p>
 <h4>rtcSetLocalDescription</h4>
-<div class="highlight"><pre><span></span><code><span class="nb nb-Type">int</span> <span class="n">rtcSetLocalDescription</span><span class="p">(</span><span class="nb nb-Type">int</span> <span class="n">pc</span><span class="p">,</span> <span class="k">const</span> <span class="nb">char</span> <span class="o">*</span><span class="n">type</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="nb nb-Type">int</span><span class="w"> </span><span class="n">rtcSetLocalDescription</span><span class="p">(</span><span class="nb nb-Type">int</span><span class="w"> </span><span class="n">pc</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="nb">char</span><span class="w"> </span><span class="o">*</span><span class="n">type</span><span class="p">)</span><span class="w"></span>
 </code></pre></div>
 
 <p>Initiates the handshake process. Following this call, the local description callback will be called with the local description, which must be sent to the remote peer by the user's method of choice. Note this call is implicit after <code>rtcSetRemoteDescription</code> and <code>rtcCreateDataChannel</code> if <code>disableAutoNegotiation</code> was not set on Peer Connection creation.</p>
@@ -182,7 +184,7 @@
 <li><code>type</code> (optional): type of the description ("offer", "answer", "pranswer", or "rollback") or NULL for autodetection.</li>
 </ul>
 <h4>rtcSetRemoteDescription</h4>
-<div class="highlight"><pre><span></span><code><span class="nb nb-Type">int</span> <span class="n">rtcSetRemoteDescription</span><span class="p">(</span><span class="nb nb-Type">int</span> <span class="n">pc</span><span class="p">,</span> <span class="k">const</span> <span class="nb">char</span> <span class="o">*</span><span class="n">sdp</span><span class="p">,</span> <span class="k">const</span> <span class="nb">char</span> <span class="o">*</span><span class="n">type</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="nb nb-Type">int</span><span class="w"> </span><span class="n">rtcSetRemoteDescription</span><span class="p">(</span><span class="nb nb-Type">int</span><span class="w"> </span><span class="n">pc</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="nb">char</span><span class="w"> </span><span class="o">*</span><span class="n">sdp</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="nb">char</span><span class="w"> </span><span class="o">*</span><span class="n">type</span><span class="p">)</span><span class="w"></span>
 </code></pre></div>
 
 <p>Sets the remote description received from the remote peer by the user's method of choice. The remote description may have candidates or not.</p>
@@ -193,7 +195,7 @@
 </ul>
 <p>If the remote description is an offer and <code>disableAutoNegotiation</code> was not set in <code>rtcConfiguration</code>, the library will automatically answer by calling <code>rtcSetLocalDescription</code> internally. Otherwise, the user must call it to answer the remote description.</p>
 <h4>rtcAddRemoteCandidate</h4>
-<div class="highlight"><pre><span></span><code><span class="nb nb-Type">int</span> <span class="n">rtcAddRemoteCandidate</span><span class="p">(</span><span class="nb nb-Type">int</span> <span class="n">pc</span><span class="p">,</span> <span class="k">const</span> <span class="nb">char</span> <span class="o">*</span><span class="n">cand</span><span class="p">,</span> <span class="k">const</span> <span class="nb">char</span> <span class="o">*</span><span class="n">mid</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="nb nb-Type">int</span><span class="w"> </span><span class="n">rtcAddRemoteCandidate</span><span class="p">(</span><span class="nb nb-Type">int</span><span class="w"> </span><span class="n">pc</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="nb">char</span><span class="w"> </span><span class="o">*</span><span class="n">cand</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="nb">char</span><span class="w"> </span><span class="o">*</span><span class="n">mid</span><span class="p">)</span><span class="w"></span>
 </code></pre></div>
 
 <p>Adds a trickled remote candidate received from the remote peer by the user's method of choice.</p>
@@ -351,7 +353,7 @@
 </ul>
 <p>Return value: <code>true</code> if the channel exists and is closed (not open and not connecting), <code>false</code> otherwise</p>
 <h4>rtcSendMessage</h4>
-<div class="highlight"><pre><span></span><code><span class="nb nb-Type">int</span> <span class="n">rtcSendMessage</span><span class="p">(</span><span class="nb nb-Type">int</span> <span class="n">id</span><span class="p">,</span> <span class="k">const</span> <span class="nb">char</span> <span class="o">*</span><span class="n">data</span><span class="p">,</span> <span class="nb nb-Type">int</span> <span class="n">size</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="nb nb-Type">int</span><span class="w"> </span><span class="n">rtcSendMessage</span><span class="p">(</span><span class="nb nb-Type">int</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="nb">char</span><span class="w"> </span><span class="o">*</span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="nb nb-Type">int</span><span class="w"> </span><span class="n">size</span><span class="p">)</span><span class="w"></span>
 </code></pre></div>
 
 <p>Sends a message in the channel.</p>
@@ -370,6 +372,10 @@ Tracks are an exception: There is no flow or congestion control, messages are ne
 </code></pre></div>
 
 <p>Retrieves the current buffered amount, i.e. the total size of currently buffered messages waiting to be actually sent in the channel. This does not account for the data buffered at the transport level.</p>
+<p>Arguments:</p>
+<ul>
+<li><code>id</code>: the channel identifier</li>
+</ul>
 <p>Return value: the buffered amount or a negative error code</p>
 <h4>rtcSetBufferedAmountLowThreshold</h4>
 <div class="highlight"><pre><span></span><code>int rtcSetBufferedAmountLowThreshold(int id, int amount)
@@ -407,23 +413,23 @@ Tracks are an exception: There is no flow or congestion control, messages are ne
 <p>Return value: the available amount or a negative error code</p>
 <h3>Data Channel</h3>
 <h4>rtcCreateDataChannel</h4>
-<div class="highlight"><pre><span></span><code><span class="nb nb-Type">int</span> <span class="n">rtcCreateDataChannel</span><span class="p">(</span><span class="nb nb-Type">int</span> <span class="n">pc</span><span class="p">,</span> <span class="k">const</span> <span class="nb">char</span> <span class="o">*</span><span class="n">label</span><span class="p">)</span>
-<span class="nb nb-Type">int</span> <span class="n">rtcCreateDataChannelEx</span><span class="p">(</span><span class="nb nb-Type">int</span> <span class="n">pc</span><span class="p">,</span> <span class="k">const</span> <span class="nb">char</span> <span class="o">*</span><span class="n">label</span><span class="p">,</span> <span class="k">const</span> <span class="n">rtcDataChannelInit</span> <span class="o">*</span><span class="n">init</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="nb nb-Type">int</span><span class="w"> </span><span class="n">rtcCreateDataChannel</span><span class="p">(</span><span class="nb nb-Type">int</span><span class="w"> </span><span class="n">pc</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="nb">char</span><span class="w"> </span><span class="o">*</span><span class="n">label</span><span class="p">)</span><span class="w"></span>
+<span class="nb nb-Type">int</span><span class="w"> </span><span class="n">rtcCreateDataChannelEx</span><span class="p">(</span><span class="nb nb-Type">int</span><span class="w"> </span><span class="n">pc</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="nb">char</span><span class="w"> </span><span class="o">*</span><span class="n">label</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">rtcDataChannelInit</span><span class="w"> </span><span class="o">*</span><span class="n">init</span><span class="p">)</span><span class="w"></span>
 
-<span class="n">typedef</span> <span class="n">struct</span> <span class="p">{</span>
-    <span class="nb nb-Type">bool</span> <span class="n">unordered</span><span class="p">;</span>
-    <span class="nb nb-Type">bool</span> <span class="n">unreliable</span><span class="p">;</span>
-    <span class="n">unsigned</span> <span class="nb nb-Type">int</span> <span class="n">maxPacketLifeTime</span><span class="p">;</span>
-    <span class="n">unsigned</span> <span class="nb nb-Type">int</span> <span class="n">maxRetransmits</span><span class="p">;</span>
-<span class="p">}</span> <span class="n">rtcReliability</span><span class="p">;</span>
+<span class="n">typedef</span><span class="w"> </span><span class="n">struct</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nb nb-Type">bool</span><span class="w"> </span><span class="n">unordered</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="nb nb-Type">bool</span><span class="w"> </span><span class="n">unreliable</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">unsigned</span><span class="w"> </span><span class="nb nb-Type">int</span><span class="w"> </span><span class="n">maxPacketLifeTime</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">unsigned</span><span class="w"> </span><span class="nb nb-Type">int</span><span class="w"> </span><span class="n">maxRetransmits</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"> </span><span class="n">rtcReliability</span><span class="p">;</span><span class="w"></span>
 
-<span class="n">typedef</span> <span class="n">struct</span> <span class="p">{</span>
-    <span class="n">rtcReliability</span> <span class="n">reliability</span><span class="p">;</span>
-    <span class="k">const</span> <span class="nb">char</span> <span class="o">*</span><span class="n">protocol</span><span class="p">;</span>
-    <span class="nb nb-Type">bool</span> <span class="n">negotiated</span><span class="p">;</span>
-    <span class="nb nb-Type">bool</span> <span class="n">manualStream</span><span class="p">;</span>
-    <span class="n">uint16_t</span> <span class="n">stream</span><span class="p">;</span>
-<span class="p">}</span> <span class="n">rtcDataChannelInit</span><span class="p">;</span>
+<span class="n">typedef</span><span class="w"> </span><span class="n">struct</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">rtcReliability</span><span class="w"> </span><span class="n">reliability</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="nb">char</span><span class="w"> </span><span class="o">*</span><span class="n">protocol</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="nb nb-Type">bool</span><span class="w"> </span><span class="n">negotiated</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="nb nb-Type">bool</span><span class="w"> </span><span class="n">manualStream</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">uint16_t</span><span class="w"> </span><span class="n">stream</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"> </span><span class="n">rtcDataChannelInit</span><span class="p">;</span><span class="w"></span>
 </code></pre></div>
 
 <p>Adds a Data Channel on a Peer Connection. The Peer Connection does not need to be connected, however, the Data Channel will be open only when the Peer Connection is connected.</p>
@@ -507,7 +513,7 @@ Tracks are an exception: There is no flow or congestion control, messages are ne
 <p>Return value: <code>RTC_ERR_SUCCESS</code> or a negative error code</p>
 <h3>Track</h3>
 <h4>rtcAddTrack</h4>
-<div class="highlight"><pre><span></span><code><span class="nb nb-Type">int</span> <span class="n">rtcAddTrack</span><span class="p">(</span><span class="nb nb-Type">int</span> <span class="n">pc</span><span class="p">,</span> <span class="k">const</span> <span class="nb">char</span> <span class="o">*</span><span class="n">mediaDescriptionSdp</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="nb nb-Type">int</span><span class="w"> </span><span class="n">rtcAddTrack</span><span class="p">(</span><span class="nb nb-Type">int</span><span class="w"> </span><span class="n">pc</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="nb">char</span><span class="w"> </span><span class="o">*</span><span class="n">mediaDescriptionSdp</span><span class="p">)</span><span class="w"></span>
 </code></pre></div>
 
 <p>Adds a new Track on a Peer Connection. The Peer Connection does not need to be connected, however, the Track will be open only when the Peer Connection is connected.</p>
@@ -546,12 +552,12 @@ Tracks are an exception: There is no flow or congestion control, messages are ne
 <p>TODO</p>
 <h3>WebSocket</h3>
 <h4>rtcCreateWebSocket</h4>
-<div class="highlight"><pre><span></span><code><span class="nb nb-Type">int</span> <span class="n">rtcCreateWebSocket</span><span class="p">(</span><span class="k">const</span> <span class="nb">char</span> <span class="o">*</span><span class="n">url</span><span class="p">)</span>
-<span class="nb nb-Type">int</span> <span class="n">rtcCreateWebSocketEx</span><span class="p">(</span><span class="k">const</span> <span class="nb">char</span> <span class="o">*</span><span class="n">url</span><span class="p">,</span> <span class="k">const</span> <span class="n">rtcWsConfiguration</span> <span class="o">*</span><span class="n">config</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="nb nb-Type">int</span><span class="w"> </span><span class="n">rtcCreateWebSocket</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="nb">char</span><span class="w"> </span><span class="o">*</span><span class="n">url</span><span class="p">)</span><span class="w"></span>
+<span class="nb nb-Type">int</span><span class="w"> </span><span class="n">rtcCreateWebSocketEx</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="nb">char</span><span class="w"> </span><span class="o">*</span><span class="n">url</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">rtcWsConfiguration</span><span class="w"> </span><span class="o">*</span><span class="n">config</span><span class="p">)</span><span class="w"></span>
 
-<span class="n">typedef</span> <span class="n">struct</span> <span class="p">{</span>
-    <span class="nb nb-Type">bool</span> <span class="n">disableTlsVerification</span><span class="p">;</span>    <span class="o">//</span> <span class="k">if</span> <span class="bp">true</span><span class="p">,</span> <span class="n">disable</span> <span class="n">TLS</span> <span class="n">certificate</span> <span class="n">verification</span>
-<span class="p">}</span> <span class="n">rtcWsConfiguration</span><span class="p">;</span>
+<span class="n">typedef</span><span class="w"> </span><span class="n">struct</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nb nb-Type">bool</span><span class="w"> </span><span class="n">disableTlsVerification</span><span class="p">;</span><span class="w">    </span><span class="o">//</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="bp">true</span><span class="p">,</span><span class="w"> </span><span class="n">disable</span><span class="w"> </span><span class="n">TLS</span><span class="w"> </span><span class="n">certificate</span><span class="w"> </span><span class="n">verification</span><span class="w"></span>
+<span class="p">}</span><span class="w"> </span><span class="n">rtcWsConfiguration</span><span class="p">;</span><span class="w"></span>
 </code></pre></div>
 
 <p>Creates a new client WebSocket.</p>
@@ -600,15 +606,15 @@ Tracks are an exception: There is no flow or congestion control, messages are ne
 <p>If <code>buffer</code> is <code>NULL</code>, the path is not copied but the size is still returned.</p>
 <h3>WebSocket Server</h3>
 <h4>rtcCreateWebSocketServer</h4>
-<div class="highlight"><pre><span></span><code><span class="nb nb-Type">int</span> <span class="n">rtcCreateWebSocketServer</span><span class="p">(</span><span class="k">const</span> <span class="n">rtcWsServerConfiguration</span> <span class="o">*</span><span class="n">config</span><span class="p">,</span> <span class="n">rtcWebSocketClientCallbackFunc</span> <span class="n">cb</span><span class="p">);</span>
+<div class="highlight"><pre><span></span><code><span class="nb nb-Type">int</span><span class="w"> </span><span class="n">rtcCreateWebSocketServer</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">rtcWsServerConfiguration</span><span class="w"> </span><span class="o">*</span><span class="n">config</span><span class="p">,</span><span class="w"> </span><span class="n">rtcWebSocketClientCallbackFunc</span><span class="w"> </span><span class="n">cb</span><span class="p">);</span><span class="w"></span>
 
-<span class="n">typedef</span> <span class="n">struct</span> <span class="p">{</span>
-    <span class="n">uint16_t</span> <span class="n">port</span><span class="p">;</span>
-    <span class="nb nb-Type">bool</span> <span class="n">enableTls</span><span class="p">;</span>
-    <span class="k">const</span> <span class="nb">char</span> <span class="o">*</span><span class="n">certificatePemFile</span><span class="p">;</span> <span class="o">//</span> <span class="n">NULL</span> <span class="k">for</span> <span class="n">autogenerated</span> <span class="n">certificate</span>
-    <span class="k">const</span> <span class="nb">char</span> <span class="o">*</span><span class="n">keyPemFile</span><span class="p">;</span>         <span class="o">//</span> <span class="n">NULL</span> <span class="k">for</span> <span class="n">autogenerated</span> <span class="n">certificate</span>
-    <span class="k">const</span> <span class="nb">char</span> <span class="o">*</span><span class="n">keyPemPass</span><span class="p">;</span>         <span class="o">//</span> <span class="n">NULL</span> <span class="k">if</span> <span class="n">no</span> <span class="k">pass</span>
-<span class="p">}</span> <span class="n">rtcWsServerConfiguration</span><span class="p">;</span>
+<span class="n">typedef</span><span class="w"> </span><span class="n">struct</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">uint16_t</span><span class="w"> </span><span class="n">port</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="nb nb-Type">bool</span><span class="w"> </span><span class="n">enableTls</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="nb">char</span><span class="w"> </span><span class="o">*</span><span class="n">certificatePemFile</span><span class="p">;</span><span class="w"> </span><span class="o">//</span><span class="w"> </span><span class="n">NULL</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">autogenerated</span><span class="w"> </span><span class="n">certificate</span><span class="w"></span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="nb">char</span><span class="w"> </span><span class="o">*</span><span class="n">keyPemFile</span><span class="p">;</span><span class="w">         </span><span class="o">//</span><span class="w"> </span><span class="n">NULL</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">autogenerated</span><span class="w"> </span><span class="n">certificate</span><span class="w"></span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="nb">char</span><span class="w"> </span><span class="o">*</span><span class="n">keyPemPass</span><span class="p">;</span><span class="w">         </span><span class="o">//</span><span class="w"> </span><span class="n">NULL</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">no</span><span class="w"> </span><span class="k">pass</span><span class="w"></span>
+<span class="p">}</span><span class="w"> </span><span class="n">rtcWsServerConfiguration</span><span class="p">;</span><span class="w"></span>
 </code></pre></div>
 
 <p>Creates a new WebSocket server.</p>
@@ -617,9 +623,9 @@ Tracks are an exception: There is no flow or congestion control, messages are ne
 <li><code>config</code>: a structure with the following parameters:</li>
 <li><code>uint16_t port</code>: the port to listen on (if 0, automatically select an available port)</li>
 <li><code>bool enableTls</code>: if true, enable the TLS layer (WSS)</li>
-<li><code>const char *certificatePemFile</code>: path of the file containing the TLS PEM certificate (<code>NULL</code> for an autogenerated certificate)</li>
-<li><code>const char *keyPemFile</code>: path of the file containing the TLS PEM key (<code>NULL</code> for an autogenerated certificate)</li>
-<li><code>const char *keyPemPass</code>: the TLS PEM key passphrase (NULL if no passphrase)</li>
+<li><code>const char *certificatePemFile</code>: PEM certificate or path of the file containing the PEM certificate (<code>NULL</code> for an autogenerated certificate)</li>
+<li><code>const char *keyPemFile</code>: PEM key or path of the file containing the PEM key (<code>NULL</code> for an autogenerated certificate)</li>
+<li><code>const char *keyPemPass</code>: PEM key file passphrase (NULL if no passphrase)</li>
 <li><code>cb</code>: the callback for incoming client WebSocket connections (must not be <code>NULL</code>)</li>
 </ul>
 <p><code>cb</code> must have the following signature: <code>void rtcWebSocketClientCallbackFunc(int wsserver, int ws, void *user_ptr)</code></p>
