@@ -334,6 +334,32 @@
 
 <p><code>cb</code> must have the following signature: <code>void myAvailableCallback(int id, void *user_ptr)</code></p>
 <p>It is called when messages are now available to be received with <code>rtcReceiveMessage</code>.</p>
+<h4>rtcSendMessage</h4>
+<div class="highlight"><pre><span></span><code><span class="nb nb-Type">int</span><span class="w"> </span><span class="n">rtcSendMessage</span><span class="p">(</span><span class="nb nb-Type">int</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="nb">char</span><span class="w"> </span><span class="o">*</span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="nb nb-Type">int</span><span class="w"> </span><span class="n">size</span><span class="p">)</span><span class="w"></span>
+</code></pre></div>
+
+<p>Sends a message in the channel.</p>
+<p>Arguments:</p>
+<ul>
+<li><code>id</code>: the channel identifier</li>
+<li><code>data</code>: the message data</li>
+<li><code>size</code>: if size &gt;= 0, <code>data</code> is interpreted as a binary message of length <code>size</code>, otherwise it is interpreted as a null-terminated UTF-8 string.</li>
+</ul>
+<p>Return value: <code>RTC_ERR_SUCCESS</code> or a negative error code</p>
+<p>The message is sent immediately if possible, otherwise it is buffered to be sent later.</p>
+<p>Data Channel and WebSocket: If the message may not be sent immediately due to flow control or congestion control, it is buffered until it can actually be sent. You can retrieve the current buffered data size with <code>rtcGetBufferedAmount</code>.</p>
+<p>Track: There is no flow or congestion control, messages are never buffered and <code>rtcGetBufferedAmount</code> always returns 0.</p>
+<h4>rtcClose</h4>
+<div class="highlight"><pre><span></span><code>int rtcClose(int id)
+</code></pre></div>
+
+<p>Close the channel.</p>
+<p>Arguments:</p>
+<ul>
+<li><code>id</code>: the channel identifier</li>
+</ul>
+<p>Return value: <code>RTC_ERR_SUCCESS</code> or a negative error code</p>
+<p>WebSocket: Like with the JavaScript API, the state will first change to closing, then closed only after the connection has been actually closed.</p>
 <h4>rtcIsOpen</h4>
 <div class="highlight"><pre><span></span><code>bool rtcIsOpen(int id)
 </code></pre></div>
@@ -352,21 +378,6 @@
 <li><code>id</code>: the channel identifier</li>
 </ul>
 <p>Return value: <code>true</code> if the channel exists and is closed (not open and not connecting), <code>false</code> otherwise</p>
-<h4>rtcSendMessage</h4>
-<div class="highlight"><pre><span></span><code><span class="nb nb-Type">int</span><span class="w"> </span><span class="n">rtcSendMessage</span><span class="p">(</span><span class="nb nb-Type">int</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="nb">char</span><span class="w"> </span><span class="o">*</span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="nb nb-Type">int</span><span class="w"> </span><span class="n">size</span><span class="p">)</span><span class="w"></span>
-</code></pre></div>
-
-<p>Sends a message in the channel.</p>
-<p>Arguments:</p>
-<ul>
-<li><code>id</code>: the channel identifier</li>
-<li><code>data</code>: the message data</li>
-<li><code>size</code>: if size &gt;= 0, <code>data</code> is interpreted as a binary message of length <code>size</code>, otherwise it is interpreted as a null-terminated UTF-8 string.</li>
-</ul>
-<p>Return value: <code>RTC_ERR_SUCCESS</code> or a negative error code</p>
-<p>The message is sent immediately if possible, otherwise it is buffered to be sent later.</p>
-<p>Data Channel and WebSocket: If the message may not be sent immediately due to flow control or congestion control, it is buffered until it can actually be sent. You can retrieve the current buffered data size with <code>rtcGetBufferedAmount</code>.
-Tracks are an exception: There is no flow or congestion control, messages are never buffered and <code>rtcGetBufferedAmount</code> always returns 0.</p>
 <h4>rtcGetBufferedAmount</h4>
 <div class="highlight"><pre><span></span><code>int rtcGetBufferedAmount(int id)
 </code></pre></div>
@@ -542,13 +553,37 @@ Tracks are an exception: There is no flow or congestion control, messages are ne
 <p>Retrieves the SDP media description of a Track.</p>
 <p>Arguments:</p>
 <ul>
-<li><code>dc</code>: the Track identifier</li>
+<li><code>tr</code>: the Track identifier</li>
 <li><code>buffer</code>: a user-supplied buffer to store the description</li>
 <li><code>size</code>: the size of <code>buffer</code></li>
 </ul>
 <p>Return value: the length of the string copied in buffer (including the terminating null character) or a negative error code</p>
 <p>If <code>buffer</code> is <code>NULL</code>, the description is not copied but the size is still returned.</p>
-<h3>Media</h3>
+<h4>rtcGetTrackMid</h4>
+<div class="highlight"><pre><span></span><code>int rtcGetTrackMid(int tr, char *buffer, int size)
+</code></pre></div>
+
+<p>Retrieves the mid (media indentifier) of a Track.</p>
+<p>Arguments:</p>
+<ul>
+<li><code>tr</code>: the Track identifier</li>
+<li><code>buffer</code>: a user-supplied buffer to store the mid</li>
+<li><code>size</code>: the size of <code>buffer</code></li>
+</ul>
+<p>Return value: the length of the string copied in buffer (including the terminating null character) or a negative error code</p>
+<p>If <code>buffer</code> is <code>NULL</code>, the mid is not copied but the size is still returned.</p>
+<h4>rtcGetTrackDirection</h4>
+<div class="highlight"><pre><span></span><code>int rtcGetTrackDirection(int tr, rtcDirection *direction)
+</code></pre></div>
+
+<p>Retrieves the direction of a Track.</p>
+<p>Arguments:</p>
+<ul>
+<li><code>tr</code>: the Track identifier</li>
+<li><code>direction</code>: a pointer to a rtcDescription enum to store the result</li>
+</ul>
+<p>On success, the value pointed by <code>direction</code> will be set to one of the following: <code>RTC_DIRECTION_SENDONLY</code>, <code>RTC_DIRECTION_RECVONLY</code>, <code>RTC_DIRECTION_SENDRECV</code>, <code>RTC_DIRECTION_INACTIVE</code>, or <code>RTC_DIRECTION_UNKNOWN</code>.</p>
+<h3>Media handling</h3>
 <p>TODO</p>
 <h3>WebSocket</h3>
 <h4>rtcCreateWebSocket</h4>
