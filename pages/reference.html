@@ -324,6 +324,7 @@
 
 <p><code>cb</code> must have the following signature: <code>void myMessageCallback(int id, const char *message, int size, void *user_ptr)</code></p>
 <p>It is called when the channel receives a message. While it is set, messages can't be received with <code>rtcReceiveMessage</code>.</p>
+<p>Track: By default, the track receives data as RTP packets.</p>
 <div class="highlight"><pre><span></span><code>int rtcSetBufferedAmountLowCallback(int id, rtcBufferedAmountLowCallbackFunc cb)
 </code></pre></div>
 
@@ -348,7 +349,7 @@
 <p>Return value: <code>RTC_ERR_SUCCESS</code> or a negative error code</p>
 <p>The message is sent immediately if possible, otherwise it is buffered to be sent later.</p>
 <p>Data Channel and WebSocket: If the message may not be sent immediately due to flow control or congestion control, it is buffered until it can actually be sent. You can retrieve the current buffered data size with <code>rtcGetBufferedAmount</code>.</p>
-<p>Track: There is no flow or congestion control, messages are never buffered and <code>rtcGetBufferedAmount</code> always returns 0.</p>
+<p>Track: By default, the track expects RTP packets. There is no flow or congestion control, packets are never buffered and <code>rtcGetBufferedAmount</code> always returns 0.</p>
 <h4>rtcClose</h4>
 <div class="highlight"><pre><span></span><code>int rtcClose(int id)
 </code></pre></div>
@@ -412,6 +413,7 @@
 </ul>
 <p>Return value: <code>RTC_ERR_SUCCESS</code> or a negative error code (In particular, <code>RTC_ERR_NOT_AVAIL</code> is returned when there are no pending messages)</p>
 <p>If <code>buffer</code> is <code>NULL</code>, the message is not copied and kept pending but the size is still written to <code>size</code>.</p>
+<p>Track: By default, the track receives data as RTP packets.</p>
 <h4>rtcGetAvailableAmount</h4>
 <div class="highlight"><pre><span></span><code>int rtcGetAvailableAmount(int id)
 </code></pre></div>
