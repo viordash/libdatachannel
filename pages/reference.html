@@ -101,6 +101,7 @@
 <span class="n">typedef</span><span class="w"> </span><span class="n">struct</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
 <span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="nb">char</span><span class="w"> </span><span class="o">**</span><span class="n">iceServers</span><span class="p">;</span><span class="w"></span>
 <span class="w">    </span><span class="nb nb-Type">int</span><span class="w"> </span><span class="n">iceServersCount</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="nb">char</span><span class="w"> </span><span class="o">*</span><span class="n">proxyServer</span><span class="p">;</span><span class="w"></span>
 <span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="nb">char</span><span class="w"> </span><span class="o">*</span><span class="n">bindAddress</span><span class="p">;</span><span class="w"></span>
 <span class="w">    </span><span class="n">rtcCertificateType</span><span class="w"> </span><span class="n">certificateType</span><span class="p">;</span><span class="w"></span>
 <span class="w">    </span><span class="n">rtcTransportPolicy</span><span class="w"> </span><span class="n">iceTransportPolicy</span><span class="p">;</span><span class="w"></span>
@@ -118,8 +119,9 @@
 <p>Arguments:</p>
 <ul>
 <li><code>config</code>: the configuration structure, containing:</li>
-<li><code>iceServers</code> (optional): an array of pointers on null-terminated ice server URIs (NULL if unused)</li>
+<li><code>iceServers</code> (optional): an array of pointers on null-terminated ICE server URIs (NULL if unused)</li>
 <li><code>iceServersCount</code> (optional): number of URLs in the array pointed by <code>iceServers</code> (0 if unused)</li>
+<li><code>proxyServer</code> (optional): if non-NULL, specifies the proxy server URI to use for TURN relaying (ignored with libjuice as ICE backend)</li>
 <li><code>bindAddress</code> (optional): if non-NULL, bind only to the given local address (ignored with libnice as ICE backend)</li>
 <li><code>certificateType</code> (optional): certificate type, either <code>RTC_CERTIFICATE_ECDSA</code> or <code>RTC_CERTIFICATE_RSA</code> (0 or <code>RTC_CERTIFICATE_DEFAULT</code> if default)</li>
 <li><code>iceTransportPolicy</code> (optional): ICE transport policy, if set to <code>RTC_TRANSPORT_POLICY_RELAY</code>, the PeerConnection will emit only relayed candidates (0 or <code>RTC_TRANSPORT_POLICY_ALL</code> if default)</li>
@@ -133,7 +135,8 @@
 </ul>
 <p>Return value: the identifier of the new Peer Connection or a negative error code.</p>
 <p>The Peer Connection must be deleted with <code>rtcDeletePeerConnection</code>.</p>
-<p>The format of each entry in <code>iceServers</code> must match the format <code>[("stun"|"turn"|"turns") ":"][login ":" password "@"]hostname[":" port]["?transport=" ("udp"|"tcp"|"tls")]</code>. The default scheme is STUN, the default port is 3478 (5349 over TLS), and the default transport is UDP.  For instance, a STUN server URI could be <code>mystunserver.org</code>, and a TURN server URI could be <code>turn:myuser:12345678@turnserver.org</code>. Note transports TCP and TLS are only available for a TURN server with libnice as ICE backend and govern only the TURN control connection, meaning relaying is always performed over UDP.</p>
+<p>Each entry in <code>iceServers</code> must match the format <code>[("stun"|"turn"|"turns") (":"|"://")][username ":" password "@"]hostname[":" port]["?transport=" ("udp"|"tcp"|"tls")]</code>. The default scheme is STUN, the default port is 3478 (5349 over TLS), and the default transport is UDP.  For instance, a STUN server URI could be <code>mystunserver.org</code>, and a TURN server URI could be <code>turn:myuser:12345678@turnserver.org</code>. Note transports TCP and TLS are only available for a TURN server with libnice as ICE backend and govern only the TURN control connection, meaning relaying is always performed over UDP.</p>
+<p>The <code>proxyServer</code> URI, if present, must match the format <code>[("http"|"socks5") (":"|"://")][username ":" password "@"]hostname["    :" port]</code>. The default scheme is HTTP, and the default port is 3128 for HTTP or 1080 for SOCKS5.</p>
 <h4>rtcDeletePeerConnection</h4>
 <div class="highlight"><pre><span></span><code>int rtcDeletePeerConnection(int pc)
 </code></pre></div>
@@ -594,6 +597,8 @@
 
 <span class="n">typedef</span><span class="w"> </span><span class="n">struct</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
 <span class="w">    </span><span class="nb nb-Type">bool</span><span class="w"> </span><span class="n">disableTlsVerification</span><span class="p">;</span><span class="w">    </span><span class="o">//</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="bp">true</span><span class="p">,</span><span class="w"> </span><span class="n">disable</span><span class="w"> </span><span class="n">TLS</span><span class="w"> </span><span class="n">certificate</span><span class="w"> </span><span class="n">verification</span><span class="w"></span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="nb">char</span><span class="w"> </span><span class="o">**</span><span class="n">protocols</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="nb nb-Type">int</span><span class="w"> </span><span class="n">protocolsCount</span><span class="p">;</span><span class="w"></span>
 <span class="p">}</span><span class="w"> </span><span class="n">rtcWsConfiguration</span><span class="p">;</span><span class="w"></span>
 </code></pre></div>
 
@@ -603,6 +608,8 @@
 <li><code>url</code>: a null-terminated string representing the fully-qualified URL to open.</li>
 <li><code>config</code>: a structure with the following parameters:</li>
 <li><code>bool disableTlsVerification</code>: if true, don't verify the TLS certificate, else try to verify it if possible</li>
+<li><code>protocols</code> (optional): an array of pointers on null-terminated protocol names (NULL if unused)</li>
+<li><code>protocolsCount</code> (optional): number of URLs in the array pointed by <code>protocols</code> (0 if unused)</li>
 </ul>
 <p>Return value: the identifier of the new WebSocket or a negative error code</p>
 <p>The new WebSocket must be deleted with <code>rtcDeleteWebSocket</code>. The scheme of the URL must be either <code>ws</code> or <code>wss</code>.</p>
