@@ -455,10 +455,10 @@
 <li><code>label</code>: a user-defined UTF-8 string representing the Data Channel name</li>
 <li><code>init</code>: a structure of initialization settings containing:</li>
 <li><code>reliability</code>: a structure of reliability settings containing:<ul>
-<li><code>bool unordered</code>: if <code>true</code>, the Data Channel will not enforce message ordering, else it will be ordered</li>
-<li><code>bool unreliable</code>: if <code>true</code>, the Data Channel will not enforce strict reliability, else it will be reliable</li>
-<li><code>unsigned int maxPacketLifeTime</code>: if unreliable, maximum packet life time in milliseconds</li>
-<li><code>unsigned int maxRetransmits</code>: if unreliable and maxPacketLifeTime is 0, maximum number of retransmissions (0 means no retransmission)</li>
+<li><code>unordered</code>: if <code>true</code>, the Data Channel will not enforce message ordering, else it will be ordered</li>
+<li><code>unreliable</code>: if <code>true</code>, the Data Channel will not enforce strict reliability, else it will be reliable</li>
+<li><code>maxPacketLifeTime</code>: if unreliable, maximum packet life time in milliseconds</li>
+<li><code>maxRetransmits</code>: if unreliable and maxPacketLifeTime is 0, maximum number of retransmissions (0 means no retransmission)</li>
 </ul>
 </li>
 <li><code>protocol</code> (optional): a user-defined UTF-8 string representing the Data Channel protocol, empty if NULL</li>
