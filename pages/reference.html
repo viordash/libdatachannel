@@ -464,7 +464,7 @@
 <li><code>protocol</code> (optional): a user-defined UTF-8 string representing the Data Channel protocol, empty if NULL</li>
 <li><code>negotiated</code>: if <code>true</code>, the Data Channel is assumed to be negotiated by the user and won't be negotiated by the WebRTC layer</li>
 <li><code>manualStream</code>: if <code>true</code>, the Data Channel will use <code>stream</code> as stream ID, else an available id is automatically selected</li>
-<li><code>stream</code> (0-65534): if <code>manualStream</code> is <code>true</code>, the Data Channel will use it as stream ID, else it is ignored</li>
+<li><code>stream</code>: if <code>manualStream</code> is <code>true</code>, the Data Channel will use it as stream ID, else it is ignored</li>
 </ul>
 <p><code>rtcDataChannel()</code> is equivalent to <code>rtcDataChannelEx()</code> with settings set to ordered, reliable, non-negotiated, with automatic stream ID selection (all flags set to <code>false</code>), and <code>protocol</code> set to an empty string.</p>
 <p>Return value: the identifier of the new Data Channel or a negative error code.</p>
@@ -489,7 +489,7 @@
 <ul>
 <li><code>dc</code>: the Data Channel identifier</li>
 </ul>
-<p>Return value: the stream ID (0-65534) or a negative error code</p>
+<p>Return value: the stream ID or a negative error code</p>
 <h4>rtcGetDataChannelLabel</h4>
 <div class="highlight"><pre><span></span><code>int rtcGetDataChannelLabel(int dc, char *buffer, int size)
 </code></pre></div>
