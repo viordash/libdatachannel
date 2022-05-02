@@ -135,8 +135,9 @@
 </ul>
 <p>Return value: the identifier of the new Peer Connection or a negative error code.</p>
 <p>The Peer Connection must be deleted with <code>rtcDeletePeerConnection</code>.</p>
-<p>Each entry in <code>iceServers</code> must match the format <code>[("stun"|"turn"|"turns") (":"|"://")][username ":" password "@"]hostname[":" port]["?transport=" ("udp"|"tcp"|"tls")]</code>. The default scheme is STUN, the default port is 3478 (5349 over TLS), and the default transport is UDP.  For instance, a STUN server URI could be <code>mystunserver.org</code>, and a TURN server URI could be <code>turn:myuser:12345678@turnserver.org</code>. Note transports TCP and TLS are only available for a TURN server with libnice as ICE backend and govern only the TURN control connection, meaning relaying is always performed over UDP.</p>
+<p>Each entry in <code>iceServers</code> must match the format <code>[("stun"|"turn"|"turns") (":"|"://")][username ":" password "@"]hostname[":" port]["?transport=" ("udp"|"tcp"|"tls")]</code>. The default scheme is STUN, the default port is 3478 (5349 over TLS), and the default transport is UDP. For instance, a STUN server URI could be <code>mystunserver.org</code>, and a TURN server URI could be <code>turn:myuser:12345678@turnserver.org</code>. Note transports TCP and TLS are only available for a TURN server with libnice as ICE backend and govern only the TURN control connection, meaning relaying is always performed over UDP.</p>
 <p>The <code>proxyServer</code> URI, if present, must match the format <code>[("http"|"socks5") (":"|"://")][username ":" password "@"]hostname["    :" port]</code>. The default scheme is HTTP, and the default port is 3128 for HTTP or 1080 for SOCKS5.</p>
+<p>If the username or password of an URI contains reserved special characters, they must be percent-encoded. In particular, ":" must be encoded as "%3A" and "@" must by encoded as "%40".</p>
 <h4>rtcDeletePeerConnection</h4>
 <div class="highlight"><pre><span></span><code>int rtcDeletePeerConnection(int pc)
 </code></pre></div>
@@ -292,7 +293,7 @@
 <div class="highlight"><pre><span></span><code>int rtcGetSelectedCandidatePair(int pc, char *local, int localSize, char *remote, int remoteSize)
 </code></pre></div>
 
-<p>Retrieve the currently selected candidate pair. The call may fail if the state is not <code>RTC_CONNECTED</code>, and the selected candidate pair might change if the state is not <code>RTC_COMPLETED</code>.</p>
+<p>Retrieves the currently selected candidate pair. The call may fail if the state is not <code>RTC_CONNECTED</code>, and the selected candidate pair might change if the state is not <code>RTC_COMPLETED</code>.</p>
 <p>Arguments:</p>
 <ul>
 <li><code>pc</code>: the Peer Connection identifier</li>
@@ -303,6 +304,14 @@
 </ul>
 <p>Return value: the maximun length of strings copied in buffers (including the terminating null character) or a negative error code</p>
 <p>If <code>local</code>, <code>remote</code>, or both, are <code>NULL</code>, the corresponding candidate is not copied, but the maximum length is still returned.</p>
+<h4>rtcGetMaxDataChannelStream</h4>
+<div class="highlight"><pre><span></span><code>int rtcGetMaxDataChannelStream(int pc);
+</code></pre></div>
+
+<p>Retrieves the maximum stream ID a Data Channel may use. It is useful to create user-negotiated Data Channels with <code>negotiated=true</code> and <code>manualStream=true</code>. The maximum is negotiated during connection, therefore the final value after connection might be lower than before connection if the remote maximum is lower.</p>
+<p>Arguments:
+- <code>pc</code>: the Peer Connection identifier</p>
+<p>Return value: the maximum stream ID (<code>stream</code> for a Data Channel may be set from 0 to this value included) or a negative error code</p>
 <h3>Channel (Common API for Data Channel, Track, and WebSocket)</h3>
 <p>The following common functions might be called with a generic channel identifier. It may be the identifier of either a Data Channel, a Track, or a WebSocket.</p>
 <h4>rtcSetXCallback</h4>
