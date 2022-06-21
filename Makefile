@@ -137,7 +137,7 @@ endif
 
 openssl:
 	cd $(OPENSSL_DIR) && \
-		./Configure --api=1.0.0 linux-x86 --release shared no-async no-asm no-engine no-hw-padlock no-sse2 no-tests no-ssl2 no-zlib no-err no-camellia no-seed \
+		./Configure --api=1.1.0 linux-x86 --release shared no-async no-asm no-engine no-hw-padlock no-sse2 no-tests no-ssl2 no-zlib no-err no-camellia no-seed \
 		no-cms no-gost no-pinshared no-aria no-bf no-blake2 no-camellia no-cast no-cmac no-dsa no-ecdh no-ecdsa no-idea no-mdc2 no-ocb no-rc2 no-rc4 \
 		no-rc5 no-rmd160 no-scrypt no-seed no-siphash no-sm2 no-sm3 no-sm4 no-whirlpool && \
 		make
