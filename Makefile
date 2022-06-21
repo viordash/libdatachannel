@@ -13,8 +13,9 @@ USRSCTP_DIR=deps/usrsctp
 SRTP_DIR=deps/libsrtp
 JUICE_DIR=deps/libjuice
 PLOG_DIR=deps/plog
+OPENSSL_DIR=deps/openssl
 
-INCLUDES=-Isrc -Iinclude/rtc -Iinclude -I$(PLOG_DIR)/include -I$(USRSCTP_DIR)/usrsctplib
+INCLUDES=-Isrc -Iinclude/rtc -Iinclude -I$(PLOG_DIR)/include -I$(USRSCTP_DIR)/usrsctplib -I$(OPENSSL_DIR)/include
 LDLIBS=
 
 USE_GNUTLS ?= 0
@@ -71,7 +72,7 @@ OBJS=$(subst .cpp,.o,$(SRCS))
 TEST_SRCS=$(shell printf "%s " test/*.cpp)
 TEST_OBJS=$(subst .cpp,.o,$(TEST_SRCS))
 
-all: $(NAME).a $(NAME).so tests
+all: openssl $(NAME).a $(NAME).so
 
 src/%.o: src/%.cpp
 	$(CXX) $(CXXFLAGS) $(CPPFLAGS) $(INCLUDES) -MMD -MP -o $@ -c $<
@@ -109,6 +110,7 @@ dist-clean: clean
 	-cd $(USRSCTP_DIR) && make clean
 	-cd $(SRTP_DIR) && make clean
 	-cd $(JUICE_DIR) && make clean
+	-cd $(OPENSSL_DIR) && make clean
 
 libusrsctp.a:
 	cd $(USRSCTP_DIR) && \
@@ -132,3 +134,12 @@ else
 endif
 	cp $(JUICE_DIR)/libjuice.a .
 
+
+openssl:
+	cd $(OPENSSL_DIR) && \
+		./Configure --api=1.0.0 linux-x86 --release shared no-async no-asm no-engine no-hw-padlock no-sse2 no-tests no-ssl2 no-zlib no-err no-camellia no-seed \
+		no-cms no-gost no-pinshared no-aria no-bf no-blake2 no-camellia no-cast no-cmac no-dsa no-ecdh no-ecdsa no-idea no-mdc2 no-ocb no-rc2 no-rc4 \
+		no-rc5 no-rmd160 no-scrypt no-seed no-siphash no-sm2 no-sm3 no-sm4 no-whirlpool && \
+		make
+	cp $(OPENSSL_DIR)/libcrypto.a .
+	cp $(OPENSSL_DIR)/libssl.a .
