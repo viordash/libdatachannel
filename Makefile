@@ -1,22 +1,24 @@
 # libdatachannel
 
+
+OPENSSL_DIR=deps/openssl
+
 NAME=libdatachannel
 CXX=$(CROSS)g++
 AR=$(CROSS)ar
 RM=rm -f
-CXXFLAGS=-std=c++17
+CXXFLAGS=-std=c++17 -m32
 CPPFLAGS=-O2 -pthread -fPIC -Wall
-LDFLAGS=-pthread
+LDFLAGS=-pthread -m32 -L$(OPENSSL_DIR)
 LIBS=
 LOCALLIBS=libusrsctp.a
 USRSCTP_DIR=deps/usrsctp
 SRTP_DIR=deps/libsrtp
 JUICE_DIR=deps/libjuice
 PLOG_DIR=deps/plog
-OPENSSL_DIR=deps/openssl
 
 INCLUDES=-Isrc -Iinclude/rtc -Iinclude -I$(PLOG_DIR)/include -I$(USRSCTP_DIR)/usrsctplib -I$(OPENSSL_DIR)/include
-LDLIBS=
+LDLIBS= -l:libcrypto.so.1.1 -l:libssl.so.1.1
 
 USE_GNUTLS ?= 0
 ifneq ($(USE_GNUTLS), 0)
@@ -64,7 +66,8 @@ else
 endif
 
 INCLUDES+=$(if $(LIBS),$(shell pkg-config --cflags $(LIBS)),)
-LDLIBS+=$(LOCALLIBS) $(if $(LIBS),$(shell pkg-config --libs $(LIBS)),)
+# LDLIBS+=$(LOCALLIBS) $(if $(LIBS),$(shell pkg-config --libs $(LIBS)),)
+LDLIBS+=$(LOCALLIBS)
 
 SRCS=$(shell printf "%s " src/*.cpp src/impl/*.cpp)
 OBJS=$(subst .cpp,.o,$(SRCS))
@@ -83,10 +86,14 @@ test/%.o: test/%.cpp
 -include $(subst .cpp,.d,$(SRCS))
 
 $(NAME).a: $(LOCALLIBS) $(OBJS)
+	@echo "------------------------------>> static $(NAME)"
 	$(AR) crf $@ $(OBJS)
+	@echo "------------------------------<< static $(NAME)"
 
 $(NAME).so: $(LOCALLIBS) $(OBJS)
+	@echo "------------------------------>> shared $(NAME)"
 	$(CXX) $(LDFLAGS) -shared -o $@ $(OBJS) $(LDLIBS)
+	@echo "------------------------------<< shared $(NAME)"
 
 tests: $(NAME).a $(TEST_OBJS)
 	$(CXX) $(LDFLAGS) -o $@ $(TEST_OBJS) $(NAME).a $(LDLIBS)
@@ -116,13 +123,13 @@ libusrsctp.a:
 	cd $(USRSCTP_DIR) && \
 		./bootstrap && \
 		./configure --enable-static --disable-programs --disable-debug \
-			--disable-inet --disable-inet6 CFLAGS="-fPIC" && \
+			--disable-inet --disable-inet6 CFLAGS="-fPIC -m32" && \
 		make
 	cp $(USRSCTP_DIR)/usrsctplib/.libs/libusrsctp.a .
 
 libsrtp2.a:
 	cd $(SRTP_DIR) && \
-		./configure && \
+		./configure CFLAGS="-m32" && \
 		make
 	cp $(SRTP_DIR)/libsrtp2.a .
 
@@ -141,5 +148,3 @@ openssl:
 		no-cms no-gost no-pinshared no-aria no-bf no-blake2 no-camellia no-cast no-cmac no-dsa no-ecdh no-ecdsa no-idea no-mdc2 no-ocb no-rc2 no-rc4 \
 		no-rc5 no-rmd160 no-scrypt no-seed no-siphash no-sm2 no-sm3 no-sm4 no-whirlpool && \
 		make
-	cp $(OPENSSL_DIR)/libcrypto.a .
-	cp $(OPENSSL_DIR)/libssl.a .
