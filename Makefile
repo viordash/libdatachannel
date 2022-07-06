@@ -79,7 +79,7 @@ TEST_OBJS=$(subst .cpp,.o,$(TEST_SRCS))
 EXAMPLES_STREAMER_SRCS=$(shell printf "%s " examples/streamer/*.cpp)
 EXAMPLES_STREAMER_OBJS=$(subst .cpp,.o,$(EXAMPLES_STREAMER_SRCS))
 
-all: openssl $(NAME).a $(NAME).so
+all: $(NAME).a $(NAME).so
 
 src/%.o: src/%.cpp
 	$(CXX) $(CXXFLAGS) $(CPPFLAGS) $(INCLUDES) -MMD -MP -o $@ -c $<
@@ -92,12 +92,12 @@ examples/streamer/%.o: examples/streamer/%.cpp
 
 -include $(subst .cpp,.d,$(SRCS))
 
-$(NAME).a: $(LOCALLIBS) $(OBJS)
+$(NAME).a: openssl $(LOCALLIBS) $(OBJS)
 	@echo "------------------------------>> static $(NAME)"
 	$(AR) crf $@ $(OBJS)
 	@echo "------------------------------<< static $(NAME)"
 
-$(NAME).so: $(LOCALLIBS) $(OBJS)
+$(NAME).so: openssl $(LOCALLIBS) $(OBJS)
 	@echo "------------------------------>> shared $(NAME)"
 	$(CXX) $(LDFLAGS) -shared -o $@ $(OBJS) $(LDLIBS)
 	@echo "------------------------------<< shared $(NAME)"
