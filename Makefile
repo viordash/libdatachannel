@@ -146,9 +146,9 @@ libsrtp2.a:
 
 libjuice.a:
 ifneq ($(USE_GNUTLS), 0)
-	cd $(JUICE_DIR) && make USE_NETTLE=1
+	cd $(JUICE_DIR) && make USE_NETTLE=1 FORCE_M32=1
 else
-	cd $(JUICE_DIR) && make USE_NETTLE=0
+	cd $(JUICE_DIR) && make USE_NETTLE=0 FORCE_M32=1
 endif
 	cp $(JUICE_DIR)/libjuice.a .
 
