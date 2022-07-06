@@ -16,8 +16,9 @@ USRSCTP_DIR=deps/usrsctp
 SRTP_DIR=deps/libsrtp
 JUICE_DIR=deps/libjuice
 PLOG_DIR=deps/plog
+JSON_DIR=deps/json
 
-INCLUDES=-Isrc -Iinclude/rtc -Iinclude -I$(PLOG_DIR)/include -I$(USRSCTP_DIR)/usrsctplib -I$(OPENSSL_DIR)/include
+INCLUDES=-Isrc -Iinclude/rtc -Iinclude -I$(PLOG_DIR)/include -I$(USRSCTP_DIR)/usrsctplib -I$(OPENSSL_DIR)/include -I$(JSON_DIR)/include
 LDLIBS= -l:libcrypto.so.1.1 -l:libssl.so.1.1
 
 USE_GNUTLS ?= 0
@@ -75,12 +76,18 @@ OBJS=$(subst .cpp,.o,$(SRCS))
 TEST_SRCS=$(shell printf "%s " test/*.cpp)
 TEST_OBJS=$(subst .cpp,.o,$(TEST_SRCS))
 
+EXAMPLES_STREAMER_SRCS=$(shell printf "%s " examples/streamer/*.cpp)
+EXAMPLES_STREAMER_OBJS=$(subst .cpp,.o,$(EXAMPLES_STREAMER_SRCS))
+
 all: openssl $(NAME).a $(NAME).so
 
 src/%.o: src/%.cpp
 	$(CXX) $(CXXFLAGS) $(CPPFLAGS) $(INCLUDES) -MMD -MP -o $@ -c $<
 
 test/%.o: test/%.cpp
+	$(CXX) $(CXXFLAGS) $(CPPFLAGS) $(INCLUDES) -Iinclude -Isrc -MMD -MP -o $@ -c $<
+
+examples/streamer/%.o: examples/streamer/%.cpp
 	$(CXX) $(CXXFLAGS) $(CPPFLAGS) $(INCLUDES) -Iinclude -Isrc -MMD -MP -o $@ -c $<
 
 -include $(subst .cpp,.d,$(SRCS))
@@ -97,6 +104,9 @@ $(NAME).so: $(LOCALLIBS) $(OBJS)
 
 tests: $(NAME).a $(TEST_OBJS)
 	$(CXX) $(LDFLAGS) -o $@ $(TEST_OBJS) $(NAME).a $(LDLIBS)
+
+examples_streamer: json.hpp $(NAME).a $(EXAMPLES_STREAMER_OBJS)
+	$(CXX) $(LDFLAGS) -o $@ $(EXAMPLES_STREAMER_OBJS) $(NAME).a $(LDLIBS)
 
 clean:
 	-$(RM) include/rtc/*.d *.d
@@ -118,6 +128,7 @@ dist-clean: clean
 	-cd $(SRTP_DIR) && make clean
 	-cd $(JUICE_DIR) && make clean
 	-cd $(OPENSSL_DIR) && make clean
+	-cd $(JSON_DIR) && make clean
 
 libusrsctp.a:
 	cd $(USRSCTP_DIR) && \
@@ -141,6 +152,9 @@ else
 endif
 	cp $(JUICE_DIR)/libjuice.a .
 
+
+json.hpp:
+	cd $(JSON_DIR) && make amalgamate
 
 openssl:
 	cd $(OPENSSL_DIR) && \
